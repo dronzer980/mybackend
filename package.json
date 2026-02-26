@@ -1,11 +1,18 @@
 {
-  "name": "mybackend",
+  "name": "google-drive-oauth-backend",
   "version": "1.0.0",
-  "main": "server.js",
-  "dependencies": {
-    "express": "^4.18.2"
-  },
+  "description": "Backend to receive and store Google Drive OAuth tokens",
+  "main": "backend-example.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node backend-example.js",
+    "dev": "nodemon backend-example.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "body-parser": "^1.20.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
   }
 }
